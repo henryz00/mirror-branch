@@ -17,7 +17,7 @@ octokit.git.getRef({
   ref: `heads/${sourceBranch}`,
 }).then(ref=>{
   
-  core.info('ref - ' + ref)
+  core.info('ref - ' + JSON.stringify(ref))
   
   const sourceSha = ref.object.sha;
   
