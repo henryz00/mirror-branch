@@ -11,17 +11,10 @@ const sourceBranch = core.getInput('source-branch', {required: true});
 const branch = core.getInput('target-branch', {required: true});
 const force = (core.getInput('force') || 'false').toUpperCase() === 'TRUE'
 
-octokit.git.getRef({
-  owner,
-  repo,
-  ref: `heads/${sourceBranch}`,
-}).then(ref=>{
+octokit.git.getRef({ owner, repo, ref: `heads/${sourceBranch}`}).then(ref=>{
   
-  core.info('ref - ' + JSON.stringify(ref))
-  
-  const sourceSha = ref.object.sha;
-  
-  core.info('SHA - ' + sourceSha)
+  const sourceSha = ref.data.object.sha;
+  core.info('Source branch SHA - ' + sourceSha)
 
   octokit.git.updateRef({owner, repo, ref: `heads/${branch}`, sourceSha, force}).
     catch(error => {
