@@ -7,12 +7,30 @@ const context = github.context;
 
 const { owner, repo } = context.repo;
 const sha = context.sha;
+const sourceBranch = core.getInput('source-branch', {required: true});
 const branch = core.getInput('target-branch', {required: true});
 const force = (core.getInput('force') || 'false').toUpperCase() === 'TRUE'
 
-core.info('SHA - ' + sha)
+octokit.git.getRef({
+  owner,
+  repo,
+  ref: `heads/${sourceBranch}`,
+}).then(ref=>{
+  
+  core.info('ref - ' + ref)
+  
+  const sourceSha = ref.object.sha;
+  
+  core.info('SHA - ' + sourceSha)
 
-octokit.git.updateRef({owner, repo, ref: `heads/${branch}`, sha, force}).
-  catch(error => {
-    core.setFailed(`Failed to update ref: ${error}`);
-  });
+  octokit.git.updateRef({owner, repo, ref: `heads/${branch}`, sourceSha, force}).
+    catch(error => {
+      core.setFailed(`Failed to update ref: ${error}`);
+    });
+  
+}).
+catch(error => {
+  core.setFailed(`Failed to get ref: ${error}`);
+});
+
+
