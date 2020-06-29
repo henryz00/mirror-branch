@@ -1,7 +1,7 @@
 name: 'Mirror Branch to Branch'
 description: 'Mirror any branch A to any branch B'
 inputs:
-  target-branch:
+  source-branch:
     description: 'Branch to mirror from'
     required: true
   target-branch:
