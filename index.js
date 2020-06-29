@@ -16,7 +16,7 @@ octokit.git.getRef({ owner, repo, ref: `heads/${sourceBranch}`}).then(ref=>{
   const sourceSha = ref.data.object.sha;
   core.info('Source branch SHA - ' + sourceSha)
 
-  octokit.git.updateRef({owner, repo, ref: `heads/${branch}`, sourceSha, force}).
+  octokit.git.updateRef({owner, repo, ref: `heads/${branch}`, sha: sourceSha, force}).
     catch(error => {
       core.setFailed(`Failed to update ref: ${error}`);
     });
